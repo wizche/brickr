@@ -155,7 +155,7 @@ void OpenGLScene::drawBackground(QPainter *painter, const QRectF &)
     float w = m_lightItem->x() - width() / 2;
     float h = height() / 2 - m_lightItem->y();
     const float pos[] = { w, h, 512, 0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    //glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
     glTranslatef(m_cameraTranslation.x(), m_cameraTranslation.y(), m_cameraTranslation.z());
     glTranslatef(0, 0, -m_distance);
