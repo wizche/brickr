@@ -432,6 +432,22 @@ void AssemblyWidget::on_objExportButton_pressed()
   legoCloudNode->exportToObj(filename);
 }
 
+void AssemblyWidget::on_ldrExportButton_pressed()
+{
+    LegoCloudNode* legoCloudNode = plugin_->getLegoCloudNode();
+    if(!legoCloudNode)
+        return;
+
+    QString filename = QFileDialog::getSaveFileName(this, "Save as", "", "Ldr (*.ldr)");
+
+    if(filename.isNull())
+    {
+      return;
+    }
+
+    legoCloudNode->exportToLdr(filename);
+}
+
 void AssemblyWidget::on_printStatsButton_pressed()
 {
   LegoCloudNode* legoCloudNode = plugin_->getLegoCloudNode();

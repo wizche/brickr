@@ -20,13 +20,27 @@
 
 #define KNOB_RESOLUTION_DISPLAY 15
 #define KNOB_RESOLUTION_OBJ_EXPORT 15
+#define DEFAULT_PART QString("3005.DAT")
+#define SIMPLE_PART_MAX 8
+#define BRICK_HEIGHT_LDU 24
+#define BRICK_DEPTH_LDU 20
 
 
 LegoCloudNode::LegoCloudNode()
   : legoCloud_(new LegoCloud()), renderLayerByLayer_(false), renderLayer_(0), knobList_(glGenLists(1)),
     renderBricks_(true), renderGraph_(false), colorRendering_(RealColor), drawDirty_(true)
 {
-
+    parts.insert(1, "3005.DAT");
+    parts.insert(2, "3004.DAT");
+    parts.insert(3, "3622.DAT");
+    parts.insert(4, "3010.DAT");
+    parts.insert(6, "3009.DAT");
+    parts.insert(8, "3008.DAT");
+    parts.insert(18, "3003.DAT");
+    parts.insert(19, "3002.DAT");
+    parts.insert(20, "3001.DAT");
+    parts.insert(21, "2456.DAT");
+    parts.insert(22, "3007.DAT");
 }
 
 LegoCloudNode::~LegoCloudNode()
@@ -684,4 +698,34 @@ void LegoCloudNode::exportToObj(QString filename)
   }
 
   objFile.close();
+}
+
+void LegoCloudNode::exportToLdr(QString filename) {
+    //Create the file
+    std::ofstream objFile (filename.toStdString().c_str());
+    if (!objFile.is_open()) {
+        std::cerr << "LegoCloudNode: unable to create or open the file: " << filename.toStdString().c_str() << std::endl;
+    }
+
+    for(int level = 0; level < legoCloud_->getLevelNumber(); level++) {
+        for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
+            const LegoBrick* brick = &(*brickIt);
+            int key;
+            int width = brick->getSizeX();
+            int height = brick->getSizeY();
+            QString part = DEFAULT_PART;
+            int colorId = brick->getColorId();
+            QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5\n";
+
+            key = qMin(width, height) * SIMPLE_PART_MAX + qMax(width, height);
+
+            if(parts.contains(key)) {
+                part = parts.value(key);
+            }
+
+            objFile << line.arg(colorId).arg(brick->getPosX()*BRICK_DEPTH_LDU).arg(-level*BRICK_HEIGHT_LDU).arg(brick->getPosY()*BRICK_DEPTH_LDU).arg(part).toStdString();
+        }
+    }
+
+    objFile.close();
 }

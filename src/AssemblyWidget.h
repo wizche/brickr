@@ -44,6 +44,7 @@ private slots:
 
   void on_saveInstructionsButton_pressed();
   void on_objExportButton_pressed();
+  void on_ldrExportButton_pressed();
 
   void on_printStatsButton_pressed();
 
