@@ -38,7 +38,7 @@ LegoCloud::LegoCloud()
     }
   }
 
-  legalColors_.push_back(Color3(5.0/255.0, 19.0/255.0, 29.0/255.0));
+  legalColors_.push_back(Color3(5.0/255.0, 19.0/255.0, 29.0/255.0)); //0
   legalColors_.push_back(Color3(0.0f, 85.0/255.0, 191.0/255.0));
   legalColors_.push_back(Color3(37.0/255.0, 122.0/255.0, 62.0/255.0));
   legalColors_.push_back(Color3(0.0f, 131.0/255.0, 143.0/255.0));
@@ -53,8 +53,70 @@ LegoCloud::LegoCloud()
   legalColors_.push_back(Color3(242.0/255.0, 112.0/255.0, 94.0/255.0));
   legalColors_.push_back(Color3(252.0/255.0, 151.0/255.0, 175.0/255.0));
   legalColors_.push_back(Color3(242.0/255.0, 205.0/255.0, 55.0/255.0));
-  legalColors_.push_back(Color3(1.0f, 1.0f, 1.0f));
-
+  legalColors_.push_back(Color3(1.0f, 1.0f, 1.0f)); //15
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(194.0/255.0, 218.0/255.0, 184.0/255.0));
+  legalColors_.push_back(Color3(251.0/255.0, 230.0/255.0, 150.0/255.0));
+  legalColors_.push_back(Color3(228.0/255.0, 205.0/255.0, 158.0/255.0));
+  legalColors_.push_back(Color3(201.0/255.0, 202.0/255.0, 226.0/255.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(129.0/255.0, 0.0/255.0, 123.0/255.0));
+  legalColors_.push_back(Color3(32.0/255.0, 50.0/255.0, 176.0/255.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(254.0/255.0, 138.0/255.0, 24.0/255.0));
+  legalColors_.push_back(Color3(146.0/255.0, 57.0/255.0, 120.0/255.0));
+  legalColors_.push_back(Color3(187.0/255.0, 233.0/255.0, 11.0/255.0));
+  legalColors_.push_back(Color3(149.0/255.0, 138.0/255.0, 115.0/255.0));
+  legalColors_.push_back(Color3(228.0/255.0, 173.0/255.0, 200.0/255.0));
+  legalColors_.push_back(Color3(172.0/255.0, 120.0/255.0, 186.0/255.0)); //30
+  legalColors_.push_back(Color3(225.0/255.0, 213.0/255.0, 237.0/255.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0)); //45
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0)); //60
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(243.0/255.0, 207.0/255.0, 155.0/255.0));
+  legalColors_.push_back(Color3(205.0/255.0, 98.0/255.0, 152.0/255.0));
+  legalColors_.push_back(Color3(88.0/255.0, 42.0/255.0, 18.0/255.0));
+  legalColors_.push_back(Color3(160.0/255.0, 165.0/255.0, 169.0/255.0));
+  legalColors_.push_back(Color3(108.0/255.0, 110.0/255.0, 104.0/255.0));
+  legalColors_.push_back(Color3(92.0/255.0, 157.0/255.0, 209.0/255.0));
+  legalColors_.push_back(Color3(115.0/255.0, 220.0/255.0, 161.0/255.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(0.0, 0.0, 0.0));
+  legalColors_.push_back(Color3(254.0/255.0, 204.0/255.0, 207.0/255.0));
+  legalColors_.push_back(Color3(246.0/255.0, 215.0/255.0, 179.0/255.0));
 
   assert(DEFAULT_COLOR_ID < legalColors_.size());
 }
