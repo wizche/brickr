@@ -2,6 +2,7 @@
 
 #include <qmath.h>
 #include <QGraphicsScene>
+#include <QtDebug>
 #include <iostream>
 #include <fstream>
 
@@ -24,6 +25,7 @@
 #define SIMPLE_PART_MAX 8
 #define BRICK_HEIGHT_LDU 24
 #define BRICK_DEPTH_LDU 20
+#define BRICK_DEPTH_LDU2 (BRICK_DEPTH_LDU/2)
 
 
 LegoCloudNode::LegoCloudNode()
@@ -36,11 +38,11 @@ LegoCloudNode::LegoCloudNode()
     parts.insert(4, "3010.DAT");
     parts.insert(6, "3009.DAT");
     parts.insert(8, "3008.DAT");
-    parts.insert(18, "3003.DAT");
-    parts.insert(19, "3002.DAT");
-    parts.insert(20, "3001.DAT");
-    parts.insert(21, "2456.DAT");
-    parts.insert(22, "3007.DAT");
+    parts.insert(10, "3003.DAT");
+    parts.insert(11, "3002.DAT");
+    parts.insert(12, "3001.DAT");
+    parts.insert(13, "2456.DAT");
+    parts.insert(14, "3007.DAT");
 }
 
 LegoCloudNode::~LegoCloudNode()
@@ -707,7 +709,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
         std::cerr << "LegoCloudNode: unable to create or open the file: " << filename.toStdString().c_str() << std::endl;
     }
 
-    for(int level = 0; level < legoCloud_->getLevelNumber(); level++) {
+    for(int level = 17; level < 18/*legoCloud_->getLevelNumber()*/; level++) {
         for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
             const LegoBrick* brick = &(*brickIt);
             int key;
@@ -716,14 +718,18 @@ void LegoCloudNode::exportToLdr(QString filename) {
             QString part = DEFAULT_PART;
             int colorId = brick->getColorId();
             QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5\n";
+            int x = ((double)brick->getPosX() + (width == 1 ? 0.5 : 0))*BRICK_DEPTH_LDU;
+            int y = ((double)brick->getPosY() + (height == 1 ? 0.5 : 0))*BRICK_DEPTH_LDU;
 
-            key = qMin(width, height) * SIMPLE_PART_MAX + qMax(width, height);
+            key = (qMin(width, height)-1) * SIMPLE_PART_MAX + qMax(width, height);
 
             if(parts.contains(key)) {
                 part = parts.value(key);
             }
 
-            objFile << line.arg(colorId).arg(brick->getPosX()*BRICK_DEPTH_LDU).arg(-level*BRICK_HEIGHT_LDU).arg(brick->getPosY()*BRICK_DEPTH_LDU).arg(part).toStdString();
+            qDebug() << brick->getPosX() << x << width << brick->getPosY() << y << height << key << part;
+
+            objFile << line.arg(colorId).arg(x).arg(-BRICK_HEIGHT_LDU/*-level*BRICK_HEIGHT_LDU*/).arg(y).arg(part).toStdString();
         }
     }
 
