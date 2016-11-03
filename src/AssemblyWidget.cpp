@@ -372,6 +372,7 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
   bool useSVG = fileInfo.suffix().compare("svg", Qt::CaseInsensitive) == 0;
 
   const int BRICK_PIXEL_SIZE = 20;
+  const int NUMERO_SIZE = 100;
 
   QGraphicsScene scene;
 
@@ -384,7 +385,7 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
     legoCloudNode->drawInstructions(&scene, !useSVG);
 
     int imageSizeX = legoCloudNode->getLegoCloud()->getWidth()*BRICK_PIXEL_SIZE;
-    int imageSizeY = legoCloudNode->getLegoCloud()->getDepth()*BRICK_PIXEL_SIZE;
+    int imageSizeY = legoCloudNode->getLegoCloud()->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE;
 
     QString filePathLevel = fileInfo.absolutePath() + "/" + fileInfo.baseName() + "_" + QString::number(level) + "." + fileInfo.completeSuffix();
     std::cout << "Saving: " << filePathLevel.toStdString().c_str() << std::endl;

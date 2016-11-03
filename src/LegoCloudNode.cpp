@@ -502,14 +502,16 @@ void LegoCloudNode::setColor(const LegoGraph::vertex_descriptor& vertex) const
 void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
 {
   const int BRICK_PIXEL_SIZE = 20;
+  const int NUMERO_SIZE = 100;
 
   scene->clear();
-  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE, legoCloud_->getDepth()*BRICK_PIXEL_SIZE);
+  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE, legoCloud_->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE);
+  scene->addText(QString::number(renderLayer_+1), QFont("Arial", NUMERO_SIZE));
 
   for(QList<LegoBrick>::const_iterator brick = legoCloud_->getBricks(renderLayer_).begin(); brick != legoCloud_->getBricks(renderLayer_).constEnd(); brick++)//QTL
   {
     Color3 color = legoCloud_->getLegalColor()[brick->getColorId()];
-    scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE, brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(),
+    scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE, brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(),
                    QBrush(QColor(color[0]*255, color[1]*255, color[2]*255), Qt::SolidPattern));
 
     for(int x = 0; x < brick->getSizeX(); ++x)
@@ -517,7 +519,7 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
       for(int y = 0; y < brick->getSizeY(); ++y)
       {
         double knobRadius = LEGO_KNOB_RADIUS / LEGO_KNOB_DISTANCE;
-        scene->addEllipse((brick->getPosX() + x + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, (brick->getPosY() + y + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE);
+        scene->addEllipse((brick->getPosX() + x + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, (brick->getPosY() + y + (0.5 - knobRadius))*BRICK_PIXEL_SIZE+NUMERO_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE);
       }
     }
   }
@@ -530,7 +532,7 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
     {
       QColor color(0, 0, 0, 200);
       //scene->addRect(brick.getPosX(), brick.getPosY(), brick.getSizeX(), brick.getSizeY(), QPen(Qt::NoPen), QBrush(color, Qt::SolidPattern));
-      scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE,
+      scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE,
                      brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(Qt::NoPen), QBrush(color, Qt::Dense5Pattern));
     }
   }
