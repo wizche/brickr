@@ -379,6 +379,7 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
 //  progress::setNumberOfSteps(legoCloudNode->getLegoCloud()->getLevelNumber(), "Saving instructions...");
 //  progress::setProgress(0);
 
+  int maxLevelSize = log10(legoCloudNode->getLegoCloud()->getLevelNumber())+1;
   for(int level = 0; level < legoCloudNode->getLegoCloud()->getLevelNumber(); level++)
   {
     legoCloudNode->setRenderLayer(level);
@@ -387,7 +388,7 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
     int imageSizeX = legoCloudNode->getLegoCloud()->getWidth()*BRICK_PIXEL_SIZE;
     int imageSizeY = legoCloudNode->getLegoCloud()->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE;
 
-    QString filePathLevel = fileInfo.absolutePath() + "/" + fileInfo.baseName() + "_" + QString::number(level) + "." + fileInfo.completeSuffix();
+    QString filePathLevel = fileInfo.absolutePath() + "/" + fileInfo.baseName() + "_" + QString::number(level).rightJustified(maxLevelSize, '0') + "." + fileInfo.completeSuffix();
     std::cout << "Saving: " << filePathLevel.toStdString().c_str() << std::endl;
 
     if(useSVG)
