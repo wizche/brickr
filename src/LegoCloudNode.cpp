@@ -711,7 +711,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
         std::cerr << "LegoCloudNode: unable to create or open the file: " << filename.toStdString().c_str() << std::endl;
     }
 
-    for(int level = 17; level < 18/*legoCloud_->getLevelNumber()*/; level++) {
+    for(int level = 0; level < 1/*legoCloud_->getLevelNumber()*/; level++) {
         for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
             const LegoBrick* brick = &(*brickIt);
             int key;
@@ -720,8 +720,8 @@ void LegoCloudNode::exportToLdr(QString filename) {
             QString part = DEFAULT_PART;
             int colorId = brick->getColorId();
             QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5\n";
-            int x = ((double)brick->getPosX() + (width == 1 ? 0.5 : 0))*BRICK_DEPTH_LDU;
-            int y = ((double)brick->getPosY() + (height == 1 ? 0.5 : 0))*BRICK_DEPTH_LDU;
+            int x = (brick->getPosX() + ((double)width) / 2.0) * BRICK_DEPTH_LDU;
+            int y = (brick->getPosY() + ((double)height) / 2.0) * BRICK_DEPTH_LDU;
 
             key = (qMin(width, height)-1) * SIMPLE_PART_MAX + qMax(width, height);
 
