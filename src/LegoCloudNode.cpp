@@ -712,6 +712,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
     }
 
     for(int level = 0;level < legoCloud_->getLevelNumber(); level++) {
+        objFile << "0 layer" << level +1;
         for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
             const LegoBrick* brick = &(*brickIt);
             int key;
