@@ -711,7 +711,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
         std::cerr << "LegoCloudNode: unable to create or open the file: " << filename.toStdString().c_str() << std::endl;
     }
 
-    for(int level = 0; level < 1/*legoCloud_->getLevelNumber()*/; level++) {
+    for(int level = 0;level < legoCloud_->getLevelNumber(); level++) {
         for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
             const LegoBrick* brick = &(*brickIt);
             int key;
@@ -729,9 +729,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
                 part = parts.value(key);
             }
 
-            qDebug() << brick->getPosX() << x << width << brick->getPosY() << y << height << key << part;
-
-            objFile << line.arg(colorId).arg(x).arg(-BRICK_HEIGHT_LDU/*-level*BRICK_HEIGHT_LDU*/).arg(y).arg(part).toStdString();
+            objFile << line.arg(colorId).arg(y).arg(-level*BRICK_HEIGHT_LDU).arg(x).arg(part).toStdString();
         }
     }
 
