@@ -41,8 +41,8 @@ LegoCloudNode::LegoCloudNode()
     parts.insert(10, "3003.DAT");
     parts.insert(11, "3002.DAT");
     parts.insert(12, "3001.DAT");
-    parts.insert(13, "2456.DAT");
-    parts.insert(14, "3007.DAT");
+	parts.insert(14, "2456.DAT");
+	parts.insert(16, "3007.DAT");
 }
 
 LegoCloudNode::~LegoCloudNode()
@@ -712,7 +712,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
     }
 
     for(int level = 0;level < legoCloud_->getLevelNumber(); level++) {
-        objFile << "0 layer" << level +1;
+        objFile << "0 layer " << level +1 << std::endl << std::endl;
         for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
             const LegoBrick* brick = &(*brickIt);
             int key;
@@ -720,7 +720,7 @@ void LegoCloudNode::exportToLdr(QString filename) {
             int height = brick->getSizeY();
             QString part = DEFAULT_PART;
             int colorId = brick->getColorId();
-            QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5\n";
+            QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5";
             int x = (brick->getPosX() + ((double)width) / 2.0) * BRICK_DEPTH_LDU;
             int y = (brick->getPosY() + ((double)height) / 2.0) * BRICK_DEPTH_LDU;
 
@@ -728,10 +728,14 @@ void LegoCloudNode::exportToLdr(QString filename) {
 
             if(parts.contains(key)) {
                 part = parts.value(key);
-            }
+            } else {
+				std::cout << "Unkown " << key << " (" << qMin(width, height) << " x " << qMax(width, height) << ")" << " part, use default" << std::endl;
+			}
 
-            objFile << line.arg(colorId).arg(y).arg(-level*BRICK_HEIGHT_LDU).arg(x).arg(part).toStdString();
+            objFile << line.arg(colorId).arg(y).arg(-level*BRICK_HEIGHT_LDU).arg(x).arg(part).toStdString() << std::endl;
         }
+        
+        objFile << std::endl;
     }
 
     objFile.close();
