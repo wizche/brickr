@@ -2,6 +2,7 @@
 
 #include <qmath.h>
 #include <QGraphicsScene>
+#include <QGraphicsTextItem>
 #include <QtDebug>
 #include <iostream>
 #include <fstream>
@@ -505,14 +506,18 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
   const int NUMERO_SIZE = 100;
 
   scene->clear();
-  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE, legoCloud_->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE);
+  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE+100, legoCloud_->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE);
   scene->addText(QString::number(renderLayer_+1), QFont("Arial", NUMERO_SIZE));
+
+  QHash<QString, QPair<QColor, QHash<QString, int>>> bricks;
 
   for(QList<LegoBrick>::const_iterator brick = legoCloud_->getBricks(renderLayer_).begin(); brick != legoCloud_->getBricks(renderLayer_).constEnd(); brick++)//QTL
   {
     Color3 color = legoCloud_->getLegalColor()[brick->getColorId()];
+    QColor qColor = QColor(color[0]*255, color[1]*255, color[2]*255);
+
     scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE, brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(),
-                   QBrush(QColor(color[0]*255, color[1]*255, color[2]*255), Qt::SolidPattern));
+                   QBrush(qColor, Qt::SolidPattern));
 
     for(int x = 0; x < brick->getSizeX(); ++x)
     {
@@ -521,6 +526,32 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
         double knobRadius = LEGO_KNOB_RADIUS / LEGO_KNOB_DISTANCE;
         scene->addEllipse((brick->getPosX() + x + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, (brick->getPosY() + y + (0.5 - knobRadius))*BRICK_PIXEL_SIZE+NUMERO_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE);
       }
+    }
+
+    QString sColor = QString::number(qColor.value());
+    QString ref= QString::number(qMin(brick->getSizeX(),brick->getSizeY()))+"x"+QString::number(qMax(brick->getSizeX(),brick->getSizeY()));
+
+    if(!bricks.contains(sColor)) {
+        QHash<QString, int> hColor;
+
+        hColor.insert(ref, 1);
+        QPair<QColor, QHash<QString, int>> p = qMakePair(qColor, hColor);
+        bricks.insert(sColor, p);
+    } else {
+        QPair<QColor, QHash<QString, int>> p = bricks.value(sColor);
+        QHash<QString, int> hColor = p.second;
+        if(!hColor.contains(ref)) {
+            hColor.insert(ref, 1);
+
+            p = qMakePair(p.first, hColor);
+            bricks.insert(sColor, p);
+        } else {
+            int value = hColor.value(ref);
+
+            hColor.insert(ref, ++value);
+            p = qMakePair(p.first, hColor);
+            bricks.insert(sColor, p);
+        }
     }
   }
 
@@ -535,6 +566,26 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
       scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE,
                      brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(Qt::NoPen), QBrush(color, Qt::Dense5Pattern));
     }
+  }
+
+  QHashIterator<QString, QPair<QColor, QHash<QString, int>>> it(bricks);
+  int y=0;
+  while(it.hasNext()) {
+      it.next();
+
+      QPair<QColor, QHash<QString, int>> p = it.value();
+      QHashIterator<QString, int> itC(p.second);
+      while(itC.hasNext()) {
+          QString str;
+
+          itC.next();
+          str = itC.key()+" : "+QString::number(itC.value());
+
+          scene->addRect(legoCloud_->getWidth()*BRICK_PIXEL_SIZE, y+8, 10, 10, QPen(Qt::black), QBrush(p.first));
+          QGraphicsTextItem *text = scene->addText(str, QFont("Arial", 12));
+          text->setPos(legoCloud_->getWidth()*BRICK_PIXEL_SIZE+12, y);
+          y+=14;
+      }
   }
 }
 
