@@ -40,7 +40,7 @@ LegoCloud::LegoCloud()
 
   legalColors_.push_back(Color3(5.0/255.0, 19.0/255.0, 29.0/255.0)); //0
   legalColors_.push_back(Color3(0.0f, 85.0/255.0, 191.0/255.0));
-  legalColors_.push_back(Color3(37.0/255.0, 122.0/255.0, 62.0/255.0));
+  legalColors_.push_back(Color3(0.0f, 140.0/255.0, 20.0/255.0));
   legalColors_.push_back(Color3(0.0f, 131.0/255.0, 143.0/255.0));
   legalColors_.push_back(Color3(201.0/255.0, 26.0/255.0, 9.0/255.0));
   legalColors_.push_back(Color3(200.0/255.0, 112.0/255.0, 160.0/255.0));
