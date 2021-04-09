@@ -621,6 +621,8 @@ void AssemblyWidget::loadFile(const QString &filePath, int voxelizationResolutio
 
 #ifdef WIN32
     QString command("\"" + binvoxProgramFileInfo.absoluteFilePath() + "\" -d "+ QString::number(voxelizationResolution) + " \"" + scaledFilePath + "\"");
+#elif __linux__
+    QString command("\"" + binvoxProgramFileInfo.absoluteFilePath()+ "\" -d "+ QString::number(voxelizationResolution) + " \"" +scaledFilePath + "\"");
 #else
     QString command("\"" + binvoxProgramFileInfo.absoluteFilePath()+ "\" -pb -d "+ QString::number(voxelizationResolution) + " \"" +scaledFilePath + "\"");
 #endif
