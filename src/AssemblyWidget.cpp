@@ -126,9 +126,9 @@ void AssemblyWidget::on_loadFileButton_pressed()
   QString lastOpenedFile = settings.value("AssemblyPlugin::LoadFile", "").toString();
 
 #ifdef __linux__
-  QString selectedFilePath = QFileDialog::getOpenFileName(nullptr, "Open File", lastOpenedFile);
+  QString selectedFilePath = QFileDialog::getOpenFileName(nullptr, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
 #else
-  QString selectedFilePath = QFileDialog::getOpenFileName(this, "Open File", lastOpenedFile);
+  QString selectedFilePath = QFileDialog::getOpenFileName(this, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
 #endif
 
   if(selectedFilePath.isNull())
