@@ -6,7 +6,7 @@
 #include <boost/tuple/tuple.hpp>
 #include <QTime>
 
-#define DEFAULT_COLOR_ID 2
+#define DEFAULT_COLOR_ID 0 // white
 
 LegoCloud::LegoCloud()
 {
@@ -27,8 +27,8 @@ LegoCloud::LegoCloud()
   foreach(char l, legalLengths)
   {
     //legalBricks_.insert(BrickSize(1, l));
-    legalBricks_.insert(BrickSize(1, l));
-    brickLimitation_[BrickSize(1, l)] = -1;
+    //legalBricks_.insert(BrickSize(1, l));
+    //brickLimitation_[BrickSize(1, l)] = 0;
 
     //legalBricks_.insert(BrickSize(2, l));
     if(l>1)//Prevent inserting (2,1) because (1,2) is already there
@@ -64,7 +64,7 @@ LegoCloud::LegoCloud()
 LegoCloud::~LegoCloud()
 {
   removeAllBricks();
-  //std::cout << "Cloud destroyed" << std::endl;
+  std::cout << "Cloud destroyed" << std::endl;
 }
 
 int LegoCloud::getBrickNumber() const
@@ -259,7 +259,7 @@ void LegoCloud::buildNeighbourhood()//Assumption: there is only 1x1 bricks
 
       if(neighbourNumber == 0)
       {
-        //std::cout << "One brick was removed because it had zero neighbours: ";
+        std::cout << "One brick was removed because it had zero neighbours: ";
         //brickIt->print();
         toRemove.insert(&(*brickIt));
         //brickIt->setColorId(8);
@@ -384,7 +384,7 @@ void LegoCloud::merge()
 
     noSuccessNumber++;
   }
-  //std::cout  << "Outer finished" << std::endl;
+  std::cout  << "Outer finished" << std::endl;
 
   //Then merge the inside bricks
   noSuccessNumber = 0;
@@ -548,10 +548,10 @@ void LegoCloud::loadColors(scenegraph::OpenMeshNode* meshNode)
 
         //Compute the 3 texture coordinates of the 3 triangle vertices
         Vec2 texA = mesh->texcoord2D(fheIt);
-        //std::cout << texA << std::endl;
+        std::cout << texA << std::endl;
         texA.minimize(Vec2(1.0, 1.0));
         texA.maximize(Vec2(0.0, 0.0));
-        //std::cout << texA << std::endl << std::endl;
+        std::cout << texA << std::endl << std::endl;
 
         Vec3 pointA = mesh->point(mesh->to_vertex_handle(fheIt));
         ++fheIt;
@@ -769,7 +769,7 @@ float LegoCloud::postHollow()
     }
   }*/
 
-  //std::cout << "Time hollow: " << time.elapsed()/1000.0 << std::endl;
+  std::cout << "Time hollow: " << time.elapsed()/1000.0 << std::endl;
 
   connectedComponents();
   biconnectedComponents();
@@ -1329,7 +1329,7 @@ bool LegoCloud::canMerge(LegoBrick *brick1, LegoBrick *brick2)
   //Check that this brick exists:
   if(!legalBricks_.contains(BrickSize(newBrickSizeX, newBrickSizeY)))
   {
-    //std::cerr << "Trying to merge uncompatible bricks" << std::endl;
+    std::cerr << "Trying to merge uncompatible bricks " << newBrickSizeX << "x" newBrickSizeY << std::endl;
     return false;
   }
 

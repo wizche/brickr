@@ -1,0 +1,6 @@
+moc_*
+*.o
+Makefile
+.qmake*
+brickr
+ui_AssemblyWidget.h

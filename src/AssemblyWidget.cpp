@@ -580,11 +580,13 @@ void AssemblyWidget::loadFile(const QString &filePath, int voxelizationResolutio
 
     //First we try to find it in its default location
 #ifdef WIN32
-    QFileInfo binvoxProgramFileInfo(QCoreApplication::applicationDirPath() + "/binvox.exe");
+    QFileInfo binvoxProgramFileInfo(QCoreApplication::applicationDirPath() + "win64/binvox.exe");
+#elif __APPLE__
+    QFileInfo binvoxProgramFileInfo(QCoreApplication::applicationDirPath() + "macx/binvox");
 #else
-    QFileInfo binvoxProgramFileInfo(QCoreApplication::applicationDirPath() + "/../Resources/binvox");
+    QFileInfo binvoxProgramFileInfo(QCoreApplication::applicationDirPath() + "linux/Resources/binvox");
 #endif
-//    std::cout << qPrintable(QCoreApplication::applicationFilePath()) << std::endl;
+    std::cout << "Application path: " << qPrintable(QCoreApplication::applicationFilePath()) << std::endl;
 
     if(!binvoxProgramFileInfo.exists())
     {
