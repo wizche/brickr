@@ -50,7 +50,11 @@ void AssemblyWidget::on_testButton_pressed() {
 void AssemblyWidget::on_loadFileButton_pressed()
 {
 #ifdef STATISTICS
+#ifdef __linux__
+  QStringList filePathList = QFileDialog::getOpenFileNames(nullptr, "Open File", "", "All (*.binvox *.obj)");
+#else
   QStringList filePathList = QFileDialog::getOpenFileNames(this, "Open File", "", "All (*.binvox *.obj)");
+#endif
 
   if(filePathList.isEmpty())
   {
@@ -121,7 +125,11 @@ void AssemblyWidget::on_loadFileButton_pressed()
   QSettings settings;
   QString lastOpenedFile = settings.value("AssemblyPlugin::LoadFile", "").toString();
 
-  QString selectedFilePath = QFileDialog::getOpenFileName(this, "Open File", lastOpenedFile);
+#ifdef __linux__
+  QString selectedFilePath = QFileDialog::getOpenFileName(nullptr, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
+#else
+  QString selectedFilePath = QFileDialog::getOpenFileName(this, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
+#endif
 
   if(selectedFilePath.isNull())
   {
@@ -168,11 +176,19 @@ void AssemblyWidget::on_loadTextureButton_pressed()
   if(!legoCloudNode)
     return;
 
+#ifdef __linux__
+  QString objFileName = QFileDialog::getOpenFileName(nullptr, tr("Open OBJ File"), "",tr("OBJ (*.obj)"));
+#else
   QString objFileName = QFileDialog::getOpenFileName(this, tr("Open OBJ File"), "",tr("OBJ (*.obj)"));
+#endif
   if(objFileName.isNull())
     return;
 
+#ifdef __linux__
+  QString texFileName = QFileDialog::getOpenFileName(nullptr, tr("Open Texture File"), "",tr("Images (*.bmp *.jpg *.jpeg *.tga *.dds *.png)"));
+#else
   QString texFileName = QFileDialog::getOpenFileName(this, tr("Open Texture File"), "",tr("Images (*.bmp *.jpg *.jpeg *.tga *.dds *.png)"));
+#endif
 
   if(texFileName.isNull())
     return;
@@ -359,7 +375,11 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
   QSettings settings;
   QString lastSavedFile = settings.value("AssemblyPlugin::SaveInstruction", "").toString();
 
+#ifdef __linux__
+  QString filePathBase = QFileDialog::getSaveFileName(nullptr, "Save instructions (.png .jpg or .svg)", lastSavedFile, "Images (*.png *.jpg *.svg)");
+#else
   QString filePathBase = QFileDialog::getSaveFileName(this, "Save instructions (.png .jpg or .svg)", lastSavedFile, "Images (*.png *.jpg *.svg)");
+#endif
   if(filePathBase == NULL)
   {
     //User canceled
@@ -424,7 +444,11 @@ void AssemblyWidget::on_objExportButton_pressed()
   if(!legoCloudNode)
     return;
 
+#ifdef __linux__
+  QString filename = QFileDialog::getSaveFileName(nullptr, "Save as", "", "Obj (*.obj)");
+#else
   QString filename = QFileDialog::getSaveFileName(this, "Save as", "", "Obj (*.obj)");
+#endif
 
   if(filename.isNull())
   {
@@ -615,7 +639,11 @@ void AssemblyWidget::loadFile(const QString &filePath, int voxelizationResolutio
       if(!binvoxProgramFileInfo.exists())
       {
         //If it is not found in the last specified location; we ask the user
+#ifdef __linux__
+        QString binvoxFilePath = QFileDialog::getOpenFileName(nullptr, "Locate binvox executable");
+#else
         QString binvoxFilePath = QFileDialog::getOpenFileName(this, "Locate binvox executable");
+#endif
         if(binvoxFilePath.isNull())
         {
           std::cerr << "The binvox executable was not found." << std::endl;
@@ -641,6 +669,8 @@ void AssemblyWidget::loadFile(const QString &filePath, int voxelizationResolutio
 
 #ifdef WIN32
     QString command("\"" + binvoxProgramFileInfo.absoluteFilePath() + "\" -d "+ QString::number(voxelizationResolution) + " \"" + scaledFilePath + "\"");
+#elif __linux__
+    QString command("\"" + binvoxProgramFileInfo.absoluteFilePath()+ "\" -d "+ QString::number(voxelizationResolution) + " \"" +scaledFilePath + "\"");
 #else
     QString command("\"" + binvoxProgramFileInfo.absoluteFilePath()+ "\" -pb -d "+ QString::number(voxelizationResolution) + " \"" +scaledFilePath + "\"");
 #endif
