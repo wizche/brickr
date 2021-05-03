@@ -372,21 +372,23 @@ void AssemblyWidget::on_saveInstructionsButton_pressed()
   bool useSVG = fileInfo.suffix().compare("svg", Qt::CaseInsensitive) == 0;
 
   const int BRICK_PIXEL_SIZE = 20;
+  const int NUMERO_SIZE = 100;
 
   QGraphicsScene scene;
 
 //  progress::setNumberOfSteps(legoCloudNode->getLegoCloud()->getLevelNumber(), "Saving instructions...");
 //  progress::setProgress(0);
 
+  int maxLevelSize = log10(legoCloudNode->getLegoCloud()->getLevelNumber())+1;
   for(int level = 0; level < legoCloudNode->getLegoCloud()->getLevelNumber(); level++)
   {
     legoCloudNode->setRenderLayer(level);
     legoCloudNode->drawInstructions(&scene, !useSVG);
 
     int imageSizeX = legoCloudNode->getLegoCloud()->getWidth()*BRICK_PIXEL_SIZE;
-    int imageSizeY = legoCloudNode->getLegoCloud()->getDepth()*BRICK_PIXEL_SIZE;
+    int imageSizeY = legoCloudNode->getLegoCloud()->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE;
 
-    QString filePathLevel = fileInfo.absolutePath() + "/" + fileInfo.baseName() + "_" + QString::number(level) + "." + fileInfo.completeSuffix();
+    QString filePathLevel = fileInfo.absolutePath() + "/" + fileInfo.baseName() + "_" + QString::number(level+1).rightJustified(maxLevelSize, '0') + "." + fileInfo.completeSuffix();
     std::cout << "Saving: " << filePathLevel.toStdString().c_str() << std::endl;
 
     if(useSVG)
@@ -430,6 +432,22 @@ void AssemblyWidget::on_objExportButton_pressed()
   }
 
   legoCloudNode->exportToObj(filename);
+}
+
+void AssemblyWidget::on_ldrExportButton_pressed()
+{
+    LegoCloudNode* legoCloudNode = plugin_->getLegoCloudNode();
+    if(!legoCloudNode)
+        return;
+
+    QString filename = QFileDialog::getSaveFileName(this, "Save as", "", "Ldr (*.ldr)");
+
+    if(filename.isNull())
+    {
+      return;
+    }
+
+    legoCloudNode->exportToLdr(filename);
 }
 
 void AssemblyWidget::on_printStatsButton_pressed()

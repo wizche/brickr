@@ -2,6 +2,8 @@
 
 #include <qmath.h>
 #include <QGraphicsScene>
+#include <QGraphicsTextItem>
+#include <QtDebug>
 #include <iostream>
 #include <fstream>
 
@@ -20,13 +22,28 @@
 
 #define KNOB_RESOLUTION_DISPLAY 15
 #define KNOB_RESOLUTION_OBJ_EXPORT 15
+#define DEFAULT_PART QString("3005.DAT")
+#define SIMPLE_PART_MAX 8
+#define BRICK_HEIGHT_LDU 24
+#define BRICK_DEPTH_LDU 20
+#define BRICK_DEPTH_LDU2 (BRICK_DEPTH_LDU/2)
 
 
 LegoCloudNode::LegoCloudNode()
   : legoCloud_(new LegoCloud()), renderLayerByLayer_(false), renderLayer_(0), knobList_(glGenLists(1)),
     renderBricks_(true), renderGraph_(false), colorRendering_(RealColor), drawDirty_(true)
 {
-
+    parts.insert(1, "3005.DAT");
+    parts.insert(2, "3004.DAT");
+    parts.insert(3, "3622.DAT");
+    parts.insert(4, "3010.DAT");
+    parts.insert(6, "3009.DAT");
+    parts.insert(8, "3008.DAT");
+    parts.insert(10, "3003.DAT");
+    parts.insert(11, "3002.DAT");
+    parts.insert(12, "3001.DAT");
+	parts.insert(14, "2456.DAT");
+	parts.insert(16, "3007.DAT");
 }
 
 LegoCloudNode::~LegoCloudNode()
@@ -93,8 +110,8 @@ void LegoCloudNode::render()
 
 
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+  //glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHT0);
   glEnable(GL_COLOR_MATERIAL);
   glShadeModel(GL_SMOOTH);
 
@@ -486,23 +503,55 @@ void LegoCloudNode::setColor(const LegoGraph::vertex_descriptor& vertex) const
 void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
 {
   const int BRICK_PIXEL_SIZE = 20;
+  const int NUMERO_SIZE = 100;
 
   scene->clear();
-  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE, legoCloud_->getDepth()*BRICK_PIXEL_SIZE);
+  scene->setSceneRect(0, 0, legoCloud_->getWidth()*BRICK_PIXEL_SIZE+100, legoCloud_->getDepth()*BRICK_PIXEL_SIZE+NUMERO_SIZE);
+  scene->addText(QString::number(renderLayer_+1), QFont("Arial", NUMERO_SIZE));
+
+  QHash<QString, QPair<QColor, QHash<QString, int>>> bricks;
 
   for(QList<LegoBrick>::const_iterator brick = legoCloud_->getBricks(renderLayer_).begin(); brick != legoCloud_->getBricks(renderLayer_).constEnd(); brick++)//QTL
   {
     Color3 color = legoCloud_->getLegalColor()[brick->getColorId()];
-    scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE, brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(),
-                   QBrush(QColor(color[0]*255, color[1]*255, color[2]*255), Qt::SolidPattern));
+    QColor qColor = QColor(color[0]*255, color[1]*255, color[2]*255);
+
+    scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE, brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(),
+                   QBrush(qColor, Qt::SolidPattern));
 
     for(int x = 0; x < brick->getSizeX(); ++x)
     {
       for(int y = 0; y < brick->getSizeY(); ++y)
       {
         double knobRadius = LEGO_KNOB_RADIUS / LEGO_KNOB_DISTANCE;
-        scene->addEllipse((brick->getPosX() + x + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, (brick->getPosY() + y + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE);
+        scene->addEllipse((brick->getPosX() + x + (0.5 - knobRadius))*BRICK_PIXEL_SIZE, (brick->getPosY() + y + (0.5 - knobRadius))*BRICK_PIXEL_SIZE+NUMERO_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE, 2.0*knobRadius*BRICK_PIXEL_SIZE);
       }
+    }
+
+    QString sColor = QString::number(qColor.value());
+    QString ref= QString::number(qMin(brick->getSizeX(),brick->getSizeY()))+"x"+QString::number(qMax(brick->getSizeX(),brick->getSizeY()));
+
+    if(!bricks.contains(sColor)) {
+        QHash<QString, int> hColor;
+
+        hColor.insert(ref, 1);
+        QPair<QColor, QHash<QString, int>> p = qMakePair(qColor, hColor);
+        bricks.insert(sColor, p);
+    } else {
+        QPair<QColor, QHash<QString, int>> p = bricks.value(sColor);
+        QHash<QString, int> hColor = p.second;
+        if(!hColor.contains(ref)) {
+            hColor.insert(ref, 1);
+
+            p = qMakePair(p.first, hColor);
+            bricks.insert(sColor, p);
+        } else {
+            int value = hColor.value(ref);
+
+            hColor.insert(ref, ++value);
+            p = qMakePair(p.first, hColor);
+            bricks.insert(sColor, p);
+        }
     }
   }
 
@@ -514,9 +563,29 @@ void LegoCloudNode::drawInstructions(QGraphicsScene *scene, bool hintLayerBelow)
     {
       QColor color(0, 0, 0, 200);
       //scene->addRect(brick.getPosX(), brick.getPosY(), brick.getSizeX(), brick.getSizeY(), QPen(Qt::NoPen), QBrush(color, Qt::SolidPattern));
-      scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE,
+      scene->addRect(brick->getPosX()*BRICK_PIXEL_SIZE, brick->getPosY()*BRICK_PIXEL_SIZE+NUMERO_SIZE, brick->getSizeX()*BRICK_PIXEL_SIZE,
                      brick->getSizeY()*BRICK_PIXEL_SIZE, QPen(Qt::NoPen), QBrush(color, Qt::Dense5Pattern));
     }
+  }
+
+  QHashIterator<QString, QPair<QColor, QHash<QString, int>>> it(bricks);
+  int y=0;
+  while(it.hasNext()) {
+      it.next();
+
+      QPair<QColor, QHash<QString, int>> p = it.value();
+      QHashIterator<QString, int> itC(p.second);
+      while(itC.hasNext()) {
+          QString str;
+
+          itC.next();
+          str = itC.key()+" : "+QString::number(itC.value());
+
+          scene->addRect(legoCloud_->getWidth()*BRICK_PIXEL_SIZE, y+8, 10, 10, QPen(Qt::black), QBrush(p.first));
+          QGraphicsTextItem *text = scene->addText(str, QFont("Arial", 12));
+          text->setPos(legoCloud_->getWidth()*BRICK_PIXEL_SIZE+12, y);
+          y+=14;
+      }
   }
 }
 
@@ -684,4 +753,41 @@ void LegoCloudNode::exportToObj(QString filename)
   }
 
   objFile.close();
+}
+
+void LegoCloudNode::exportToLdr(QString filename) {
+    //Create the file
+    std::ofstream objFile (filename.toStdString().c_str());
+    if (!objFile.is_open()) {
+        std::cerr << "LegoCloudNode: unable to create or open the file: " << filename.toStdString().c_str() << std::endl;
+    }
+
+    for(int level = 0;level < legoCloud_->getLevelNumber(); level++) {
+        objFile << "0 layer " << level +1 << std::endl << std::endl;
+        for(QList<LegoBrick>::const_iterator brickIt = legoCloud_->getBricks(level).begin(); brickIt != legoCloud_->getBricks(level).constEnd(); brickIt++) {
+            const LegoBrick* brick = &(*brickIt);
+            int key;
+            int width = brick->getSizeX();
+            int height = brick->getSizeY();
+            QString part = DEFAULT_PART;
+            int colorId = brick->getColorId();
+            QString line = width < height ? "1 %1 %2 %3 %4 1 0 0 0 1 0 0 0 1 %5\n" : "1 %1 %2 %3 %4 0 0 1 0 1 0 -1 0 0 %5";
+            int x = (brick->getPosX() + ((double)width) / 2.0) * BRICK_DEPTH_LDU;
+            int y = (brick->getPosY() + ((double)height) / 2.0) * BRICK_DEPTH_LDU;
+
+            key = (qMin(width, height)-1) * SIMPLE_PART_MAX + qMax(width, height);
+
+            if(parts.contains(key)) {
+                part = parts.value(key);
+            } else {
+				std::cout << "Unkown " << key << " (" << qMin(width, height) << " x " << qMax(width, height) << ")" << " part, use default" << std::endl;
+			}
+
+            objFile << line.arg(colorId).arg(y).arg(-level*BRICK_HEIGHT_LDU).arg(x).arg(part).toStdString() << std::endl;
+        }
+        
+        objFile << std::endl;
+    }
+
+    objFile.close();
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>352</width>
-    <height>625</height>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -207,7 +207,7 @@
           <item row="3" column="1">
            <widget class="QRadioButton" name="biconRadioButton">
             <property name="text">
-             <string>Weak artic. point</string>
+             <string>Wea&amp;k artic. point</string>
             </property>
            </widget>
           </item>
@@ -238,7 +238,7 @@
           <item row="3" column="0">
            <widget class="QRadioButton" name="randomRadioButton">
             <property name="text">
-             <string>Random</string>
+             <string>&amp;Random</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -494,7 +494,7 @@
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
          <property name="spacing">
-          <number>-1</number>
+          <number>6</number>
          </property>
          <item row="1" column="1">
           <widget class="QPushButton" name="objExportButton">
@@ -541,6 +541,19 @@
            </property>
            <property name="flat">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="ldrExportButton">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>23</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Export to .ldr</string>
            </property>
           </widget>
          </item>
@@ -842,6 +855,48 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>testZSpinBox</tabstop>
+  <tabstop>testYSpinBox</tabstop>
+  <tabstop>testButton</tabstop>
+  <tabstop>testXSpinBox</tabstop>
+  <tabstop>hollowCheckBox</tabstop>
+  <tabstop>shellThicknessSpinBox</tabstop>
+  <tabstop>loadFileButton</tabstop>
+  <tabstop>renderBricksBox</tabstop>
+  <tabstop>renderGraphBox</tabstop>
+  <tabstop>biconRadioButton</tabstop>
+  <tabstop>layerBox</tabstop>
+  <tabstop>layerSpinBox</tabstop>
+  <tabstop>randomRadioButton</tabstop>
+  <tabstop>conRadioButton</tabstop>
+  <tabstop>realColorRadioButton</tabstop>
+  <tabstop>basicAdvancedTabs</tabstop>
+  <tabstop>autoOptimizeButton</tabstop>
+  <tabstop>finalizeButton</tabstop>
+  <tabstop>splitConCompButton</tabstop>
+  <tabstop>loopConCompButton</tabstop>
+  <tabstop>mergeButton</tabstop>
+  <tabstop>splitBiconCompButton</tabstop>
+  <tabstop>loopBiconCompButton</tabstop>
+  <tabstop>solveBrickLimitButton</tabstop>
+  <tabstop>postHollowButton</tabstop>
+  <tabstop>objExportButton</tabstop>
+  <tabstop>saveInstructionsButton</tabstop>
+  <tabstop>printStatsButton</tabstop>
+  <tabstop>ldrExportButton</tabstop>
+  <tabstop>spinBox1x2</tabstop>
+  <tabstop>spinBox1x3</tabstop>
+  <tabstop>spinBox1x4</tabstop>
+  <tabstop>spinBox1x6</tabstop>
+  <tabstop>spinBox1x8</tabstop>
+  <tabstop>spinBox2x2</tabstop>
+  <tabstop>spinBox2x3</tabstop>
+  <tabstop>spinBox2x4</tabstop>
+  <tabstop>spinBox2x6</tabstop>
+  <tabstop>spinBox2x8</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

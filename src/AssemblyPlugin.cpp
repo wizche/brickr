@@ -241,8 +241,6 @@ bool AssemblyPlugin::parseBinvox(const std::string& filename, LegoCloudNode* leg
             colors.insert(key, fields[3].toInt());
         }
 
-        qDebug() << colors;
-
         colorFile.close();
     }
   }
