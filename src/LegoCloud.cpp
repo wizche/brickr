@@ -1389,7 +1389,7 @@ bool LegoCloud::canMerge(LegoBrick *brick1, LegoBrick *brick2)
   //Check that this brick exists:
   if(!legalBricks_.contains(BrickSize(newBrickSizeX, newBrickSizeY)))
   {
-    std::cerr << "Trying to merge uncompatible bricks " << newBrickSizeX << "x" newBrickSizeY << std::endl;
+    std::cerr << "Trying to merge uncompatible bricks " << newBrickSizeX << "x" << newBrickSizeY << std::endl;
     return false;
   }
 
