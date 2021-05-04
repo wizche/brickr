@@ -55,14 +55,13 @@ void AssemblyWidget::on_loadButton_pressed()
     QSettings settings;
     QString lastOpenedFile = settings.value("AssemblyPlugin::LoadFile", "").toString();
 
-    
     // TODO: Disabled to make test faster
 #ifdef __linux__
     QString selectedFilePath = QFileDialog::getOpenFileName(nullptr, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
 #else
     QString selectedFilePath = QFileDialog::getOpenFileName(this, "Open File", lastOpenedFile, "All (*.binvox *.obj)");
 #endif
-    
+
     //QString selectedFilePath = lastOpenedFile;
     if (selectedFilePath.isNull())
     {
@@ -74,13 +73,28 @@ void AssemblyWidget::on_loadButton_pressed()
 
     //We now check if the extension is a mesh
     QFileInfo selectedFileinfo(selectedFilePath);
-    if (!isMeshExtensionSupported(selectedFileinfo.suffix()))
+
+    if (selectedFileinfo.suffix().compare("binvox", Qt::CaseInsensitive) == 0)
+    {
+        plugin_->loadVoxelization(selectedFilePath);
+        LegoCloudNode *legoCloudNode = plugin_->getLegoCloudNode();
+        if (!legoCloudNode)
+            return;
+
+        if (hollowCheckBox->isChecked())
+            legoCloudNode->getLegoCloud()->preHollow(shellThicknessSpinBox->value());
+        return;
+    }
+    else if (!isMeshExtensionSupported(selectedFileinfo.suffix()))
     {
         std::cerr << "This file extension is not supported: " << selectedFileinfo.suffix().toStdString() << std::endl;
         return;
     }
+    else
+    {
 
-    resetUi();
+        resetUi();
+    }
 
     if (!modeler.importModel(selectedFilePath.toLocal8Bit().data()))
     {
@@ -117,8 +131,10 @@ void AssemblyWidget::on_processFileButton_pressed()
 
     QTemporaryFile tmpfile("model_XXXXXX.obj");
     tmpfile.setAutoRemove(false);
-    if (tmpfile.open()) {
-        if(!modeler.exportModel(tmpfile.fileName().toLocal8Bit().data())){
+    if (tmpfile.open())
+    {
+        if (!modeler.exportModel(tmpfile.fileName().toLocal8Bit().data()))
+        {
             std::cerr << "Unable to export model to " << tmpfile.fileName().toLocal8Bit().data() << std::endl;
         }
     }
