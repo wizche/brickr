@@ -15,6 +15,8 @@
 #include <QTextStream>
 #include <fstream>
 
+#include "Modeler.h"
+
 //#define STATISTICS
 
 AssemblyWidget::AssemblyWidget(AssemblyPlugin* _plugin, QWidget* _parent)
@@ -25,6 +27,10 @@ AssemblyWidget::AssemblyWidget(AssemblyPlugin* _plugin, QWidget* _parent)
   //instructionView->scale(10, 10);
 
   plugin_->setWidget(this);
+  
+  //TODO: build model manipulation as first step!
+  Modeler modeler;
+  modeler.process();
 }
 
 AssemblyWidget::~AssemblyWidget() {

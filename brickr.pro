@@ -4,8 +4,11 @@
 
 TEMPLATE = app
 TARGET = brickr
+CONFIG += c++11
 DEPENDPATH += . forms src
 INCLUDEPATH += . src
+INCLUDEPATH += ./vcglib/
+INCLUDEPATH += ./vcglib/eigenlib
 QT += svg opengl
 LIBS += -lGLU
 QMAKE_CXXFLAGS += -std=c++11
@@ -21,7 +24,8 @@ HEADERS += src/AssemblyPlugin.h \
            src/model.h \
            src/openglscene.h \
            src/QDebugStream.h \
-           src/Vector3.h
+           src/Vector3.h \
+           src/Modeler.h 
 FORMS += forms/AssemblyWidget.ui
 SOURCES += src/AssemblyPlugin.cpp \
            src/AssemblyWidget.cpp \
@@ -29,4 +33,5 @@ SOURCES += src/AssemblyPlugin.cpp \
            src/LegoCloudNode.cpp \
            src/main.cpp \
            src/model.cpp \
-           src/openglscene.cpp
+           src/openglscene.cpp \
+           src/Modeler.cpp 
