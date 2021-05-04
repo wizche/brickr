@@ -5,6 +5,7 @@
 #include <QWidget>
 #include "ui_AssemblyWidget.h"
 
+#include "Modeler.h"
 #include "LegoBrick.h" //For BrickSize
 
 class AssemblyPlugin;
@@ -20,9 +21,11 @@ public:
   void setMaxLayerSpinBox(int max);
 
 private slots:
+  void on_scaleButton_pressed();
   void on_testButton_pressed();
   void on_layerSpinBox_valueChanged(int _value);
-  void on_loadFileButton_pressed();
+  void on_processFileButton_pressed();
+  void on_loadButton_pressed();
 //  void on_loadTextureButton_pressed();
   void on_mergeButton_pressed();
   void on_layerBox_stateChanged(int state);
@@ -68,9 +71,12 @@ private slots:
   //void on_colorRenderingBox_currentIndexChanged(const QString & text );
 
 private:
+  Modeler modeler;
+
+  void updateModelDimensions();
   void setBrickLimit(BrickSize size, int value);
   void resetUi();
-  void loadFile(const QString& filePath, int voxelizationResolution = 0);
+  void convertFile(const QString& filePath, int voxelizationResolution = 0);
   bool isMeshExtensionSupported(const QString& extension) const;
   void scaleMesh(const QString &filePath, const QString &scaledFilePath);
 

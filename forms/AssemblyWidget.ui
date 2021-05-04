@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>352</width>
-    <height>680</height>
+    <height>869</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,9 +55,72 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="loadGroupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="title">
           <string>Load</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="scaleRatioSpinBox">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>-100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QPushButton" name="loadButton">
+            <property name="text">
+             <string>Load Model (.obj)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Dimensions</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="dimensionLabel">
+            <property name="text">
+             <string>0x0x0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Scale Factor</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QPushButton" name="scaleButton">
+            <property name="text">
+             <string>Scale</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Process (voxelify)</string>
          </property>
          <property name="flat">
           <bool>false</bool>
@@ -66,7 +129,7 @@
           <property name="leftMargin">
            <number>12</number>
           </property>
-          <item row="3" column="3">
+          <item row="4" column="3">
            <widget class="QSpinBox" name="testZSpinBox">
             <property name="minimum">
              <number>1</number>
@@ -79,7 +142,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
+          <item row="4" column="2">
            <widget class="QSpinBox" name="testYSpinBox">
             <property name="minimum">
              <number>1</number>
@@ -92,7 +155,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QPushButton" name="testButton">
             <property name="minimumSize">
              <size>
@@ -105,7 +168,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QSpinBox" name="testXSpinBox">
             <property name="font">
              <font>
@@ -135,7 +198,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
+          <item row="1" column="0">
            <widget class="QCheckBox" name="hollowCheckBox">
             <property name="text">
              <string>Pre hollow</string>
@@ -145,25 +208,15 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="1" column="3">
            <widget class="QSpinBox" name="shellThicknessSpinBox">
             <property name="value">
              <number>2</number>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Shell thickness:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="4">
-           <widget class="QPushButton" name="loadFileButton">
+          <item row="2" column="0" colspan="4">
+           <widget class="QPushButton" name="processFileButton">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -171,7 +224,17 @@
              </size>
             </property>
             <property name="text">
-             <string>Load shape</string>
+             <string>Process</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Shell thickness:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -268,7 +331,7 @@
        <item>
         <widget class="QTabWidget" name="basicAdvancedTabs">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="basicTab">
           <attribute name="title">
@@ -856,14 +919,13 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>tabWidget</tabstop>
   <tabstop>testZSpinBox</tabstop>
   <tabstop>testYSpinBox</tabstop>
   <tabstop>testButton</tabstop>
   <tabstop>testXSpinBox</tabstop>
   <tabstop>hollowCheckBox</tabstop>
   <tabstop>shellThicknessSpinBox</tabstop>
-  <tabstop>loadFileButton</tabstop>
+  <tabstop>processFileButton</tabstop>
   <tabstop>renderBricksBox</tabstop>
   <tabstop>renderGraphBox</tabstop>
   <tabstop>biconRadioButton</tabstop>

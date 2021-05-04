@@ -28,8 +28,8 @@ int main(int argc, char **argv)
     GraphicsView view;
     view.setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    view.setScene(new OpenGLScene(1000,800));
-    view.resize(1000, 800);
+    view.setScene(new OpenGLScene(1280, 1024));
+    view.resize(1280, 1024);
     view.show();
 
     return app.exec();

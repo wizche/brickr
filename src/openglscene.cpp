@@ -53,10 +53,13 @@ OpenGLScene::OpenGLScene(int width, int height)
     consoleEdit->setReadOnly(true);
     console->layout()->addWidget(consoleEdit);
 
+    /*
+    //TODO: Re-add credits later
     QWidget *info = createDialog(tr("About"));
     QLabel *infoLabel = new QLabel;
     infoLabel->setText("Automatic Generation of Constructable Brick Sculptures\n© 2013-2015 Romain Testuz and Yuliy Schwartzburg\nDetails at http://lgg.epfl.ch/publications/2013/lego.php\nContact: romain.testuz@rayform.ch");
     info->layout()->addWidget(infoLabel);
+    */
 
     debugStreamOut_ = std::unique_ptr<QDebugStream>(new QDebugStream(consoleEdit));
 #ifdef WIN32
@@ -74,7 +77,7 @@ OpenGLScene::OpenGLScene(int width, int height)
     std::cerr.rdbuf(teebufErr_.get());
 #endif
 
-    QWidget *widgets[] = { info, console, assembly  }; /*instructions, controls, statistics*/
+    QWidget *widgets[] = { console, assembly  }; /*instructions, controls, statistics*/
 
     for (uint i = 0; i < sizeof(widgets) / sizeof(*widgets); ++i) {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget(0, Qt::Dialog);

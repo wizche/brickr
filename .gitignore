@@ -1,3 +1,4 @@
 build/
 vcglib*/
 .vscode/
+brickr.pro.user*

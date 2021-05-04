@@ -17,12 +17,15 @@ class MyFace    : public vcg::Face<   MyUsedTypes, vcg::face::FFAdj,  vcg::face:
 class MyEdge    : public vcg::Edge<   MyUsedTypes> {};
 class MyMesh    : public vcg::tri::TriMesh< std::vector<MyVertex>, std::vector<MyFace> , std::vector<MyEdge>  > {};
 
-using namespace vcg;
-
 class Modeler
 {
+private:
+    MyMesh mesh;
 public:
-    bool process(const char *inputFile);
+    bool importModel(const char *inputFile);
+    vcg::Point3<float> getModelSize();
+    void scale(float scalingFactor);
+    bool exportModel(const char *outputFilePath);
 };
 
 #endif // MODELER_H
