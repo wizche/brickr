@@ -27,17 +27,18 @@ LegoCloud::LegoCloud()
   foreach(char l, legalLengths)
   {
     //legalBricks_.insert(BrickSize(1, l));
-    //legalBricks_.insert(BrickSize(1, l));
-    //brickLimitation_[BrickSize(1, l)] = 0;
+    legalBricks_.insert(BrickSize(1, l));
+    brickLimitation_[BrickSize(1, l)] = 0;
 
     //legalBricks_.insert(BrickSize(2, l));
     if(l>1)//Prevent inserting (2,1) because (1,2) is already there
     {
       legalBricks_.insert(BrickSize(2, l));
       brickLimitation_[BrickSize(2, l)] = -1;
-    }
+    } 
   }
 
+  legalColors_.push_back(Color3(0.95f, 0.95f, 0.95f));//White
   legalColors_.push_back(Color3(5.0/255.0, 19.0/255.0, 29.0/255.0)); //0
   legalColors_.push_back(Color3(0.0f, 85.0/255.0, 191.0/255.0));
   legalColors_.push_back(Color3(0.0f, 140.0/255.0, 20.0/255.0));
@@ -1389,7 +1390,7 @@ bool LegoCloud::canMerge(LegoBrick *brick1, LegoBrick *brick2)
   //Check that this brick exists:
   if(!legalBricks_.contains(BrickSize(newBrickSizeX, newBrickSizeY)))
   {
-    std::cerr << "Trying to merge uncompatible bricks " << newBrickSizeX << "x" << newBrickSizeY << std::endl;
+    //std::cerr << "Trying to merge uncompatible bricks " << newBrickSizeX << "x" << newBrickSizeY << std::endl;
     return false;
   }
 
