@@ -4,7 +4,12 @@
 
 For Debian Buster install following dependancies:
 ```sh
-sudo apt install build-essential qt5-defaults libqt5svg5-dev libboost-graph-dev
+sudo apt install libglu1 build-essential qt5-default libqt5svg5-dev libboost-graph-dev
+```
+
+Eventually:
+```sh
+sudo apt install qtcreator
 ```
 
 Brickr use vcglib for model manipulation and is added as submodule dependency, be sure to pull it.
